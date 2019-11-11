@@ -1,0 +1,104 @@
+{% extends 'globals/base.html' %}
+{% load static %}
+
+{% block title %}
+    Academics
+{% endblock %}
+
+{% block body %}
+    {% block navBar %}
+        {% include 'dashboard/navbar.html' %}
+    {% endblock %}
+
+    <div class="ui stackable doubling grid">
+
+    	<div class="column"></div>
+
+    	<div class="three wide column">
+
+    		{% block usercard %}
+    			{% include 'globals/usercard.html' %}
+    		{% endblock %}
+
+    		<div class="ui divider"></div>
+
+    		<div class="ui huge fluid vertical pointing menu"
+	             style="max-width: 320px;">
+
+				<a class="active item" data-tab="one">
+					<B>Curriculum</B>
+					<i class="right floated chevron right icon"></i>
+				</a>
+                <a class="item" data-tab="two">
+                    <B>Courses</B>
+                    <i class="right floated chevron right icon"></i>
+                </a>
+			</div>
+		</div>
+
+	    <div class="eight wide column">
+	    	<div class="ui active tab segment" data-tab="one" >
+                <div class="ui three item stackable tabs menu" style="width: 100%">
+                    <a class="active item" data-tab="add_cuuriculum" style="width: 22%">
+                        <center>Add Cuuriculum</center>
+                    </a>
+                    <a class=" item" data-tab="view_curriculum" style="width: 34%">
+                        <center>View Curriculum</center>
+                    </a>
+                    <a class=" item" data-tab="add_batch_semester" style="width: 22%">
+                        <p><center>Add Batch Semester</center></p>
+                    </a>
+                    <a class=" item" data-tab="add_curriculum_courses" style="width: 22%">
+                        <p><center>Semester Courses</center></p>
+                    </a>
+                </div>
+                <div class="ui active tab " data-tab="add_cuuriculum" style="width: 100%">
+                    {%  include 'acad/add_curriculum.html' %}
+                </div>
+                <div class="ui tab " data-tab="view_curriculum" style="width: 100%">
+                    {%  include 'acad/view_btech_curr.html' %}
+                </div>
+                <div class="ui tab " data-tab="add_batch_semester" style="width: 100%">
+                    {%  include 'acad/add_semester.html' %}
+                </div>
+                <div class="ui tab " data-tab="add_curriculum_courses" style="width: 100%">
+                    {%  include 'acad/add_curr_course.html' %}
+                </div>
+            </div>
+            <div class="ui tab segment" data-tab="two" >
+                <div class="ui two item stackable tabs menu" style="width: 100%">
+                    <a class="active item" data-tab="add_course" style="width: 50%">
+                        <center>Add Course</center>
+                    </a>
+                    <a class="item" data-tab="view_course" style="width: 50%">
+                        <center>View Courses</center>
+                    </a>
+                </div>
+                <div class="ui active tab " data-tab="add_course" style="width: 100%">
+                    {%  include 'acad/add_course.html' %}
+                </div>
+                <div class="ui tab " data-tab="view_course" style="width: 100%">
+                    {%  include 'acad/view_course.html' %}
+                </div>
+            </div>
+	    </div>
+
+	    <div class="three wide column">
+            <div class="row">
+                {% comment %}
+                    TODO: the right rail!
+                {% endcomment %}
+            </div>
+        </div>
+
+        <div class="column"></div>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
+    <script type="text/javascript" src="{% static 'globals/js/datepicker.js' %}"></script>
+    <script type="text/javascript" src="{% static 'globals/js/tablesort.js' %}"></script>
+</script>
+{% endblock %}

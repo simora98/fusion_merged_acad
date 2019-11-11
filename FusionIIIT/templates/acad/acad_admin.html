@@ -1,0 +1,86 @@
+{% load static %}
+
+
+<div class="ui three item stackable tabs menu" style="width: 100%">
+    <a class="active item" data-tab="add_cuuriculum" style="width: 22%">
+        <center>Add Cuuriculum</center>
+    </a>
+    <a class=" item" data-tab="add_btech_curriculum" style="width: 34%">
+        <center>Add Btech Curriculum</center>
+    </a>
+    <a class=" item" data-tab="add_batch_semester" style="width: 22%">
+        <p><center>Add Batch Semester</center></p>
+    </a>
+    <a class=" item" data-tab="add_curriculum_courses" style="width: 22%">
+        <p><center>Add Curriculum Courses</center></p>
+    </a>
+</div>
+<div class="ui tab " data-tab="add_cuuriculum" style="width: 100%">
+	{%  include 'acad/add_course.html' %}
+</div>
+<div class="ui tab " data-tab="add_btech_curriculum" style="width: 100%">
+	{%  include 'acad/blank.html' %}
+</div>
+<div class="ui tab " data-tab="add_batch_semester" style="width: 100%">
+	{%  include 'acad/blank.html' %}
+</div>
+<div class="ui tab " data-tab="add_curriculum_courses" style="width: 100%">
+	{%  include 'acad/blank.html' %}
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="ui fullscreen request-modal modal" id='hi'>
+        <i class="close icon"></i>
+        <div class="header">
+            Processing Leave Application
+        </div>
+        <div class="content">
+            <div class="ui form">
+                <h4 class="ui dividing header">Please Add a remark</h4>
+                <input type="hidden" class="process-type" value="reject" />
+                <input class="rep" type="hidden" value="" />
+                <input class="stud" type="hidden" value="" />
+                <input class="id" type="hidden" value="" />
+                <div class="field">
+                    <div class="field">
+                        <textarea class="remark" placeholder="Enter Remark"> </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div id="send" class="ui button">Send</div>
+            <div class="ui cancel button">Cancel</div>
+        </div>
+    </div>
+<!-- <div id="h">click me !!!</div>
+ -->
+
+<script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
+<script type="text/javascript" src="{% static 'globals/js/datepicker.js' %}"></script>
+<script type="text/javascript" src="{% static 'globals/js/tablesort.js' %}"></script>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#h').click(function(){
+			$('#hi').modal('show');
+		});
+	});
+</script>

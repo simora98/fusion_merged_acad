@@ -1,0 +1,107 @@
+{% load static %}
+
+<form class="ui form" id="add_curr_course_form">
+    <div class="fields" style="width: 100%;">
+        <div class="field" style="width: 50%;">
+            <label for="view_curr_course_programme">Programmes</label>
+            <select class="ui dropdown" name="programme" id="view_curr_course_programme" required="true">
+                <option value="">B.Tech.</option>
+                {% for i in pragramme_list %}
+                    <option value="{{i}}">{{i}}</option>
+                {% endfor%}
+            </select>
+        </div>
+        <div class="field" style="width: 50%;">
+            <label for="batch">Batch</label>
+            <input id="view_curr_course_batch" type="number" name="batch" min="2000" max="2050" required="true" >
+        </div>
+    </div>
+
+
+
+<div class="ui divider"></div>
+
+
+<div style="color: red" id="view_curr_course_warning_programme" hidden="true">*Work for curriculum addition for masters and pg is in working stage, Please try again later.</div> <br>
+
+
+    <div class="add_curr_course_b" style="text-align: center;">
+        <div class="ui primary button" id="view_curr_course_search">Show curriculum</div>
+    </div>
+<div id="view_curr_course_loading-img" style="margin-top: 30px" hidden>
+          <center><div class="lds-css ng-scope"><div style="width:100%;height:100%" class="lds-rolling"><div></div></div>
+        </div></center>
+      </div>
+
+    <div id="view_curr_course_data"></div>
+
+</form>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#view_curr_course_batch").attr("placeholder",(new Date).getFullYear());
+
+    $("#view_curr_course_programme, #view_curr_course_batch, .field").click(function (event) {
+        $('.add_curr_course_b').show();
+    });
+
+    $('#view_curr_course_search').click(function (event) {
+        event.preventDefault();
+        $('#view_curr_course_warning_programme').hide();
+        $("#view_curr_course_loading-img").show();
+        $('.add_curr_course_b').hide();
+
+        var programme = document.getElementById("view_curr_course_programme").value;
+        var batch = parseInt(document.getElementById("view_curr_course_batch").value);
+        if(programme=="BTECH"){
+        $.ajax({
+                type:"POST",
+                url: "/acad/view_btech/",
+                data:{
+                programme:programme,
+                batch : batch,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+              success: function( data )
+                {
+                    if(data.done){
+                        $('#view_curr_course_data').html(data.html);
+                    }
+                    $("#view_curr_course_loading-img").fadeOut(1000);
+                    $('.add_curr_course_b').fadeOut(1000);
+                }
+            });
+        }
+        else if(programme=="MTECH"){
+        $.ajax({
+                type:"POST",
+                url: "/acad/view_mtech/",
+                data:{
+                programme:programme,
+                batch : batch,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+              success: function( data )
+                {
+                    if(data.done){
+                        $('#view_curr_course_data').html(data.html);
+                    }
+                    $("#view_curr_course_loading-img").fadeOut(1000);
+                    $('.add_curr_course_b').fadeOut(1000);
+                }
+            });
+        }
+    else{
+      $('#view_curr_course_data').empty();
+      $("#view_curr_course_loading-img").fadeOut(1000);
+      $('#view_curr_course_warning_programme').show();
+      $('.add_curr_course_b').show();
+    }
+    });
+});
+</script>
+<script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
+<script type="text/javascript" src="{% static 'globals/js/datepicker.js' %}"></script>
+<script type="text/javascript" src="{% static 'globals/js/tablesort.js' %}"></script>

@@ -1,0 +1,38 @@
+
+<form  id="add_curr_course_res_form" method ="POST" action="/acad/add_curr_course_test/" >{% csrf_token %}
+
+    {% for i in 1|rjust:sem %}
+
+      <input type="text" name="cname" placeholder="Course">
+      <input type="text" name="batch" placeholder="Batch">
+
+    {% endfor %}
+
+    {% for i in 1|rjust:4 %}
+
+      <input type="text" name="ctype" placeholder="Course">
+      <input type="text" name="sem" placeholder="Batch">
+
+    {% endfor %}
+      <button class="ui primary button" id="add_curr_course_res_set">Set</button>
+  </form>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#add_curr_course_res_form").submit(function(event) {
+
+          event.preventDefault();
+          alert("Clicked Successfully");
+          var friendForm = $(this);
+          var posting = $.post( friendForm.attr('action'), friendForm.serialize() );
+          posting.done(function(data) {
+              alert('Courses Added Successfully');
+              // window.location = "/academic-procedures/main/";
+          });
+          posting.fail(function(data) {
+              alert('Failed to add Courses');
+              // window.location = "/academic-procedures/main/";
+          });
+      });
+</script>

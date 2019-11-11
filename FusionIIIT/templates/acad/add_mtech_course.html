@@ -1,0 +1,101 @@
+{% load static %}
+
+<!-- <div class="ui stackable doubling grid" style="width: 100%;">
+	<div class="ui column" style="width: 50%;"> -->
+		<div class="ui small steps" style="width: 100%;">
+
+			{% for obj in sem_list %}
+			<div class=" step" data="{{forloop.counter}}">
+				{% if obj %}
+				<i class="ui green checkmark icon"></i>
+				{% else %}
+				<i class="ui exclamation icon"></i>
+				{%endif%}
+				<div class="content">
+					<div class="title">Sem{{forloop.counter}}</div>
+					<div class="description">{{programme}}, {{batch}}</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	<!-- </div> -->
+
+	<!-- <div class="ui column" style="width: 50%;"> -->
+		<p class="sem_info" id="add_curr_course_res_home" style="font-weight: bold;">Here information about the semster can be found.</p>
+
+
+		{% for obj in sem_list %}
+		<div class="sem_info"  id="add_curr_course_res_{{forloop.counter}}" hidden="true">
+			{% if obj %}
+				<br>
+				<table class="ui celled structured table">
+					<thead>
+						<tr>
+                            <th colspan="3"> Semester : {{obj.semester}} </th>
+                            <th colspan="2"> No. of courses : {{obj.total_courses}} </th>
+                        </tr>
+                        <tr>
+                            <th>Core</th>
+                            <th>Elective</th>
+                            <th>Thesis</th>
+                            <th>Seminar</th>
+                            <th>Lab Courses</th>
+                        </tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{obj.core_courses}}</td>
+							<td>{{obj.elective_courses}}</td>
+							<td>{{obj.thesis}}</td>
+							<td>{{obj.seminar}}</td>
+							<td>{{obj.lab_courses}}</td>
+						</tr>
+					</tbody>
+				</table>
+			{% else %}
+				<b>Information about this semester has not been decided.</b>
+			{%endif%}
+		</div>
+		{% endfor %}
+
+	<!-- </div> -->
+<!-- </div> -->
+<br>
+    <div style="text-align: center;">
+        <button class="ui primary button" id="add_curr_course_res_set_course">Set Courses</button>
+    </div>
+
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				alert("add");
+				var i;
+				$('.step').on('click',function(e){
+					i = $(this).attr('data');
+					$('.step').removeClass('active');
+				$(this).addClass('active');
+				$('.sem_info').hide();
+				$('#add_curr_course_res_'+i).show();
+				});
+				$('#add_curr_course_res_set_course').on('click',function(e){
+					e.preventDefault();
+					$('.add_curr_course_res').hide();
+					$('#add_curr_course_res_form'+i).show();
+					$('#add_curr_course_res_modal').modal('show');
+
+					$('#add_curr_course_res_warning'+i).show();
+					$('.add_curr_course_res_data').text("Semester "+i+", "+$('#add_curr_course_res_hidden').text());
+				});
+			});
+
+		</script>
+
+
+		
+
+
+
+
+		<script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
+		<script type="text/javascript" src="{% static 'globals/js/datepicker.js' %}"></script>
+		<script type="text/javascript" src="{% static 'globals/js/tablesort.js' %}"></script>

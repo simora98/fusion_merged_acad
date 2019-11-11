@@ -1,0 +1,379 @@
+{% load static %}
+
+
+
+
+<p style="color: red;">*curriculum can be added for UG, Masters and PG programmes.</p>
+<br>
+<h3>Add Curriculum :</h3>
+
+<div class="ui divider"></div>
+
+<form class="ui form">
+    <div class="fields" style="width: 100%;">
+        <div class="field" style="width: 50%;">
+            <label for="programme">Programmes</label>
+            <select class="ui dropdown" name="programme" id="programme" required="true">
+                <option value="">B.Tech.</option>
+                {% for i in pragramme_list %}
+                    <option value="{{i}}">{{i}}</option>
+                {% endfor%}
+            </select>
+        </div>
+        <div class="field" style="width: 50%;">
+            <label for="batch">Batch</label>
+            <input id="batch" type="number" name="batch" min="2000" max="2050" required="true" >
+        </div>
+    </div><br>
+
+<div style="color: red" id="warning_programme" hidden="true">*Work for curriculum addition for masters and pg is in working stage, Please try again later.</div>
+
+<div class="ui divider"></div>
+    <div class="" style="text-align: center;">
+        <button class="ui primary button" id="show_curriculum_modal">Add Curriculum</button>
+    </div>
+
+
+</form>
+
+<div class="ui modal test1" id="add_mtech_modal">
+
+  <i class="close icon"></i>
+  <div class="ui middle aligned center aligned grid">
+      <div class="column">
+      <form class="ui large form">
+          <div class="ui  segment">
+
+
+              <div class="ui dividing header">
+                              ADD CURRICULUM
+              </div>
+
+
+              <div class="fields">
+                  <div class="seven wide field">
+                      <label for="branch" class="ui dividing header"><h3 style="font-weight: bolder;font-stretch: semi-expanded; " >Branch</h3></label>
+                      <div class="ui input focus">
+                        <select class="ui dropdown" name="branch" id="branch" required="true">
+                            <option value="">Select One</option>
+                            {% for i in branch_list %}
+                            {% if forloop.counter < 4 %}
+                                <option value="{{i}}">{{i}}</option>
+                              {% endif %}
+                            {% endfor%}
+                        </select>
+                      </div>
+                  </div>
+                  <div class="seven wide field">
+                      <label for="specialization" class="ui dividing header"><h3 style="font-weight: bolder;font-stretch: semi-expanded; " >Specialization</h3></label>
+                      <div class="ui input focus">
+                        <select class="ui dropdown" name="specialization" id="specialization" required="true">
+                            <option value="">Select One</option>
+                            {% for i in specialization_list %}
+                                <option value="{{i}}">{{i}}</option>
+                            {% endfor%}
+                        </select>
+                      </div>
+                  </div>
+              </div><br>
+
+              <div class="fields">
+
+                  <div class="seven wide field">
+                      <label for="total_credits" class="ui dividing header"><h3 style="font-weight: bolder;font-stretch: semi-expanded; " >Total Credits</h3></label>
+                      <div class="ui input focus">
+                          <input id="total_credits" type="number" name="total_credits" placeholder="Total Credits" required="true">
+                      </div>
+                  </div>
+              </div><br>
+
+
+              <h3 class="ui dividing header" style="width: 20%; font-weight: bolder;font-stretch: semi-expanded; " >Credits</h3>
+              <div class="fields" style="f">
+                  <div class="field">
+                      <label for="elective_credits">Electives</label>
+                      <div class="ui input focus">
+                          <input id="elective_credits" type="number" name="elective_credits" placeholder="Elective" required="true">
+                      </div>
+                  </div>
+                  <div class="field">
+                      <label for="lab_credits">Lab</label>
+                      <div class="ui input focus">
+                          <input id="lab_credits" type="number" name="lab_credits" placeholder="Lab" required="true">
+                      </div>
+                  </div>
+                  <div class="field">
+                      <label for="core_design_credit">Thesis</label>
+                      <div class="ui input focus">
+                          <input id="thesis_credits" type="number" name="thesis_credits" placeholder="Thesis" required="true">
+                      </div>
+                  </div>
+                  <div class="field">
+                      <label for="seminar_credits">Seminar</label>
+                      <div class="ui input focus">
+                          <input id="seminar_credits" type="number" name="seminar_credits" placeholder="Seminar" required="true">
+                      </div>
+                  </div>
+              </div>
+              <div class="fields">
+                  <div class="field">
+                      <label for="core_credits">Core</label>
+                      <div class="ui input focus">
+                          <input id="core_credits" type="number" name="core_credits" placeholder="Core" required="true">
+                      </div>
+                  </div>
+              </div><br>
+
+
+
+
+              <div class="ui divider"></div>
+              <div class="ui primary button" id="set_curriculum1">Set Curriculum</div>
+          </div>
+      </form>
+  </div>
+</div>
+
+
+</div>
+
+
+
+
+<div class="ui modal test" id="add_curr_modal">
+    <i class="close icon"></i>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+        <form class="ui large form">
+            <div class="ui  segment">
+
+
+                <div class="ui dividing header">
+                                ADD CURRICULUM
+                </div>
+
+
+                <h3 class="ui dividing header" style="width: 20%; font-weight: bolder;font-stretch: semi-expanded; " >Professional Courses</h3>
+                <div class="fields">
+                    <div class="field">
+                        <label for="prof_core_credit">Core</label>
+                        <div class="ui input focus">
+                            <input id="profcorecredit" type="number" name="prof_core_credit" placeholder="Professional Core" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="prof_elective_credit">Elective</label>
+                        <div class="ui input focus">
+                            <input id="profelectivecredit" type="number" name="prof_elective_credit" placeholder="Professional Elective" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="prof_project_credit">Project </label>
+                        <div class="ui input focus">
+                            <input id="profprojectcredit" type="number" name="prof_project_credit" placeholder="Professional Project" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="prof_lab_credit">Lab </label>
+                        <div class="ui input focus">
+                            <input id="proflabcredit" type="number" name="prof_lab_credit" placeholder="Professional Lab" required="true">
+                        </div>
+                    </div>
+                </div><br>
+
+
+                <h3 class="ui dividing header" style="width: 20%; font-weight: bolder;font-stretch: semi-expanded; " >Core Courses</h3>
+                <div class="fields" style="f">
+                    <div class="field">
+                        <label for="core_engineering_science_credit">Engineering Science</label>
+                        <div class="ui input focus">
+                            <input id="escredit" type="number" name="core_engineering_science_credit" placeholder="Engineering Science" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="core_humanities_credit">Humanities</label>
+                        <div class="ui input focus">
+                            <input id="hscredit" type="number" name="core_humanities_credit" placeholder="Humanities" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="core_design_credit">Design</label>
+                        <div class="ui input focus">
+                            <input id="dscredit" type="number" name="core_design_credit" placeholder="Design" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="core_manufacturing_credit">Manufacturing</label>
+                        <div class="ui input focus">
+                            <input id="mncredit" type="number" name="core_manufacturing_credit" placeholder="Manufacturing" required="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="fields">
+                    <div class="field">
+                        <label for="core_natural_science_credit">Natural Science</label>
+                        <div class="ui input focus">
+                            <input id="nscredit" type="number" name="core_natural_science_credit" placeholder="Natural Science" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="core_management_science_credit">Management Science</label>
+                        <div class="ui input focus">
+                            <input id="mscredit" type="number" name="core_management_science_credit" placeholder="Management Science" required="true">
+                        </div>
+                    </div>
+                </div><br>
+
+
+                <div class="fields">
+                    <div class="seven wide field">
+                        <label for="pbi" class="ui dividing header"><h3 style="font-weight: bolder;font-stretch: semi-expanded; " >PBI</h3></label>
+                        <div class="ui input focus">
+                            <input id="pbi" type="number" name="pbi" placeholder="PBI" required="true">
+                        </div>
+                    </div>
+                    <div class="seven wide field">
+                        <label for="pr" class="ui dividing header"><h3 style="font-weight: bolder;font-stretch: semi-expanded; " >Optional Project</h3></label>
+                        <div class="ui input focus">
+                            <input id="pr" type="number" name="pr" placeholder="Optional Project" required="true">
+                        </div>
+                    </div>
+                </div><br>
+
+
+
+
+                <div class="ui divider"></div>
+                <div class="ui primary button" id="set_curriculum">Set Curriculum</div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#batch").attr("placeholder",(new Date).getFullYear());
+
+    $('#show_curriculum_modal').click(function (event) {
+        event.preventDefault();
+        var programme = document.getElementById("programme").value;
+        // alert(programme);
+        if (programme == 'BTECH'){
+          $('#add_curr_modal').modal('show');
+          $('#set_curriculum').click(function(){
+              // var programme = document.getElementById("programme").value;
+              var batch = parseInt(document.getElementById("batch").value);
+              var pcorecredit = parseInt(document.getElementById("profcorecredit").value);
+              var pelectivecredit = parseInt(document.getElementById("profelectivecredit").value);
+              var pprojectcredit = parseInt(document.getElementById("profprojectcredit").value);
+              var plabcredit = parseInt(document.getElementById("proflabcredit").value);
+              var escredit = parseInt(document.getElementById("escredit").value);
+              var hscredit = parseInt(document.getElementById("hscredit").value);
+              var dscredit = parseInt(document.getElementById("dscredit").value);
+              var mncredit = parseInt(document.getElementById("mncredit").value);
+              var nscredit = parseInt(document.getElementById("nscredit").value);
+              var mscredit = parseInt(document.getElementById("mscredit").value);
+              var pbi = parseInt(document.getElementById("pbi").value);
+              var pr = parseInt(document.getElementById("pr").value);
+              $(':input').val('');
+              if(programme == "BTECH"){
+              $.ajax({
+                      type:"POST",
+                      url: "/acad/add_curriculum/",
+                      data:{
+                      programme:programme,
+                      batch : batch,
+                      prof_core_credit:pcorecredit,
+                      prof_elective_credit:pelectivecredit,
+                      prof_project_credit:pprojectcredit,
+                      prof_lab_credit: plabcredit,
+                      core_engineering_science_credit: escredit,
+                      core_humanities_credit : hscredit,
+                      core_design_credit: dscredit,
+                      core_manufacturing_credit :  mncredit,
+                      core_natural_science_credit :  nscredit,
+                      core_management_science_credit:  mscredit,
+                      pbi : pbi,
+                      pr : pr,
+                      csrfmiddlewaretoken: '{{ csrf_token }}'
+                      },
+                    success: function( data )
+                      {
+                          $('.test').modal('hide');
+                          alert(data.msg);
+                      }
+                  });
+                }
+              else{
+                  alert("hehhehe");
+                  $('.test').modal('hide');
+                  $('#warning_programme').fadeIn();
+                  $('#warning_programme').fadeOut(10000);
+              }
+          });
+        }
+
+        else if (programme == "MTECH"){
+          // alert('Mtech');
+            $('#add_mtech_modal').modal('show');
+            // alert('MTECH');
+
+            $('#set_curriculum1').click(function(){
+                // var programme = document.getElementById("programme").value;
+                var batch = parseInt(document.getElementById("batch").value);
+                // var total_number_of_courses = parseInt(document.getElementById("total_number_of_courses").value);
+                var branch = document.getElementById("branch").value;
+                var specialization = document.getElementById("specialization").value;
+                var total_credits = parseInt(document.getElementById("total_credits").value);
+                var elective_credits = parseInt(document.getElementById("elective_credits").value);
+                var lab_credits = parseInt(document.getElementById("lab_credits").value);
+                var thesis_credits = parseInt(document.getElementById("thesis_credits").value);
+                var seminar_credits = parseInt(document.getElementById("seminar_credits").value);
+                var core_credits = parseInt(document.getElementById("core_credits").value);
+                $(':input').val('');
+                if(programme == "MTECH"){
+                  // alert("one");
+                  // alert(branch);
+                  // alert(thesis_credits);
+                $.ajax({
+                        type:"POST",
+                        url: "/acad/add_mtech_curriculum/",
+                        data:{
+                        programme:programme,
+                        batch : batch,
+                        branch:branch,
+                        specialization:specialization,
+                        total_credits: total_credits,
+                        elective_credits: elective_credits,
+                        lab_credits : lab_credits,
+                        thesis_credits: thesis_credits,
+                        seminar_credits :  seminar_credits,
+                        core_credits :  core_credits,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                        },
+                      success: function( data )
+                        {
+                            $('.test1').modal('hide');
+                            alert(data.msg);
+                        }
+                    });
+                  }
+                else{
+                    alert("hehhehe");
+                    $('.test1').modal('hide');
+                    $('#warning_programme').fadeIn();
+                    $('#warning_programme').fadeOut(10000);
+                }
+            });
+        }
+    });
+
+});
+</script>
+<script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
+<script type="text/javascript" src="{% static 'globals/js/datepicker.js' %}"></script>
+<script type="text/javascript" src="{% static 'globals/js/tablesort.js' %}"></script>

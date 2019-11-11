@@ -1,0 +1,922 @@
+{% load static %}
+
+<br>
+<details class="credits_remaining ui segments">
+    <summary class="title ui segment">
+        <b>Credits Remaining :  {{total_rem}}</b>
+    </summary>
+    <div class="ui segment"><h4>Professional Core : {{trc}}</h4></div>
+    <div class="ui segment"><h4>Professional Elective : {{tre}}</h4></div>
+    <div class="ui segment"><h4>Professional Lab : {{trl}}</h4></div>
+    <div class="ui segment"><h4>Engineering Science(ES) : {{tres}}</h4></div>
+    <div class="ui segment"><h4>Natural Science(NS) : {{trns}}</h4></div>
+    <div class="ui segment"><h4>Humanities(HS) : {{trhs}}</h4></div>
+    <div class="ui segment"><h4>Design(DS) : {{trds}}</h4></div>
+    <div class="ui segment"><h4>Manufacturing(MN) : {{trmn}}</h4></div>
+    <div class="ui segment"><h4>Management Science(MS) : {{trms}}</h4></div>
+</details>
+<br>
+
+<!-- Information till 4th semester -->
+    <div class="ui four steps" style="width: 100%;">
+        {% for obj in sem_list|slice:":4" %}
+            <div class=" step" data="{{forloop.counter}}">
+                {% if obj %}
+                    <i class="ui green checkmark icon"></i>
+                {% else %}
+                    <i class="ui exclamation icon"></i>
+                {%endif%}
+                <div class="content">
+                    <div class="title">Sem{{forloop.counter}}</div>
+                    <div class="description">{{programme}}, {{batch}}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+        <!-- Information from 5th sem to 8th semester -->
+        <div class="ui four steps" style="width: 100%;">
+            {% for obj in sem_list %}
+                {% if forloop.counter > 4 %}
+                    <div class="step" data="{{forloop.counter}}">
+                        {% if obj %}
+                            <i class="ui green checkmark icon"></i>
+                        {% else %}
+                            <i class="ui exclamation icon"></i>
+                        {%endif%}
+                        <div class="content">
+                            <div class="title"><h4>Sem{{forloop.counter}}</h4></div>
+                            <div class="title">Sem{{forloop.counter}}</h4></div>
+                            <div class="description">{{programme}}, {{batch}}</div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    <!-- <div class="ui column" style="width: 50%;"> -->
+        <p class="sem_info" id="add_curr_course_res_home" style="font-weight: bold;">Here information about the semster can be found.</p>
+
+
+        {% for obj in sem_list %}
+        <div class="sem_info"  id="add_curr_course_res_{{forloop.counter}}" hidden="true">
+            {% if obj %}
+                <br>
+                <table class="ui celled structured table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"> Semester : {{obj.semester}} </th>
+                            <th colspan="4"> No. of courses : {{obj.total_number_of_courses}} </th>
+                            <th colspan="4"> PBI : {% if obj.pbi %} Allowed {% else %} Not Allowed {% endif %}</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4" class="center aligned">Professional</th>
+                            <th colspan="6" class="center aligned"> Core </th>
+                        </tr>
+                        <tr>
+                            <th>Core</th>
+                            <th>Elective</th>
+                            <th>Project</th>
+                            <th>Lab</th>
+
+                            <th>ES</th>
+                            <th>NS</th>
+                            <th>HS</th>
+                            <th>DS</th>
+                            <th>MN</th>
+                            <th>MS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{obj.professional_core_courses}}</td>
+                            <td>{{obj.professional_elective_courses}}</td>
+                            <td>{{obj.professional_project_courses}}</td>
+                            <td>{{obj.professional_lab_courses}}</td>
+
+                            <td>{{obj.Core_engineering_science_courses}}</td>
+                            <td>{{obj.Core_natural_science_courses}}</td>
+                            <td>{{obj.Core_humanities_courses}}</td>
+                            <td>{{obj.Core_design_courses}}</td>
+                            <td>{{obj.Core_manufacturing_courses}}</td>
+                            <td>{{obj.Core_management_science_courses}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            {% else %}
+                Information about this semester has not been decided.
+            {%endif%}
+        </div>
+        {% endfor %}
+<br>
+    <div style="text-align: center;">
+        <button class="ui primary button" id="add_curr_course_res_set_course">Set Courses</button>
+    </div>
+
+
+
+
+
+<div class="ui full screen modal test" id="add_curr_course_res_modal">
+    <i class="close icon"></i>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+        {% for o in sem_list %}
+        {% if o %}
+        <form class="ui large add_curr_course_res form" id="add_curr_course_res_form{{forloop.counter}}" method="POST" action="/acad/add_curr_course/" >
+					{% csrf_token %}
+            <div class="ui  segment">
+
+
+                <div class="ui dividing header">
+                                <p class="add_curr_course_res_data" style="background-color: #E5E7E9;"></p>
+                </div>
+                <div style="font-weight: bold; text-align: left;"><h4>Add Course to Curriculum :</h4></div>
+                <div class="ui divider"></div>
+
+								<input type="number" name="semester" value="{{forloop.counter}}" hidden=True>
+								<input type="number" name="batch" value="{{batch}}" hidden=True>
+                <div style="text-align: left;">
+                	<span><b>Total No. of courses : </b>{{o.total_number_of_courses}}</span>
+                </div><br>
+                {% for item in branch_list %}
+                <div style="font-weight: bold; text-align: left;"><center><h3>{{item}} Courses  :</h3></center></div>
+                {% for i in 1|rjust:o.professional_core_courses %}
+								{% if o.professional_core_courses %}
+                	<div class="eight fields">
+                		<div class="field">
+                			<div >
+                				<h4><b>Professional Core : </b></h4>
+                			</div>
+                		</div>
+										<div class="three wide field">
+                			<div class="ui input focus">
+												<select name="pccbranch" class="ui dropdown">
+                                                    {% if item ==  "CSE"%}
+													<option value="{{item}}">Computer Science and Engineering</option>
+                                                    {%elif item == "ME"%}
+                                                    <option value="{{item}}">Mechanical Engineering</option>
+                                                    {%elif item == "ECE"%}
+                                                    <option value="{{item}}">Electronics and Communication Engineering</option>
+                                                    {%elif item == "DES"%}
+                                                    <option value="{{item}}">Design</option>
+                                                    {% endif %}
+	                			</select>
+                			</div>
+                		</div>
+                		<div class="three wide field">
+                			<div class="ui input focus">
+                				<input type="text" name="pcccourse_id" placeholder="Course ID">
+                			</div>
+                		</div>
+                		<div class="four wide field">
+                			<select name="pcccourse" class="ui dropdown">
+                				<option value="">Course Name</option>
+                				{% for p in course_list %}
+                				<option value="{{p.course_name}}">{{p.course_name}}</option>
+                				{% endfor %}
+                			</select>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="pcccourse_credits" placeholder="4">
+                			</div>
+                		</div>
+                		<div class=" two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="pcccourse_lecture" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="pcccourse_tutorial" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="pcccourse_practical" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="pcccourse_discussion" placeholder="0">
+                			</div>
+                		</div>
+                	</div>
+								{% endif %}
+
+                {% endfor %}
+
+                {% for i in 1|rjust:o.professional_elective_courses %}
+								{% if o.professional_elective_courses %}
+                    <div id="_test_add_{{o.semester}}">
+                	<div class="eight fields">
+                		<div class="field">
+                			<div >
+                				<h4><b>Professional Elective : </b></h4>
+                			</div>
+                		</div>
+										<div class="three wide field">
+                            <div class="ui input focus">
+                                                <select name="pecbranch" class="ui dropdown">
+                                                    {% if item ==  "CSE"%}
+                                                    <option value="{{item}}">Computer Science and Engineering</option>
+                                                    {%elif item == "ME"%}
+                                                    <option value="{{item}}">Mechanical Engineering</option>
+                                                    {%elif item == "ECE"%}
+                                                    <option value="{{item}}">Electronics and Communication Engineering</option>
+                                                    {%elif item == "DES"%}
+                                                    <option value="{{item}}">Design</option>
+                                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                		<div class="three wide field">
+                            <div class="ui input focus">
+                                <input type="text" name="pcccourse_id" placeholder="Course ID">
+                            </div>
+                        </div>
+                        <div class="four wide field">
+                            <select name="pcccourse" class="ui dropdown">
+                                <option value="">Course Name</option>
+                                {% for p in course_list %}
+                                <option value="{{p.course_name}}">{{p.course_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="two wide field">
+                            <div class="ui input focus">
+                                <input type="number" name="peccourse_credits" placeholder="4">
+                            </div>
+                        </div>
+                        <div class=" two wide field">
+                            <div class="ui input focus">
+                                <input type="number" name="peccourse_lecture" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="two wide field">
+                            <div class="ui input focus">
+                                <input type="number" name="peccourse_tutorial" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="two wide field">
+                            <div class="ui input focus">
+                                <input type="number" name="peccourse_practical" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="two wide field">
+                            <div class="ui input focus">
+                                <input type="number" name="peccourse_discussion" placeholder="0">
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+								{% endif %}
+                    <div  align="right">
+                        <div onClick="add({{o.semester}},{{forloop.counter}})" class="ui primary button" style="cursor: pointer; cursor: hand; ">Add</div>
+                    
+                        <div onClick="del({{o.semester}},{{forloop.counter}})" class="ui secondary button" style="cursor: pointer; cursor: hand;">Remove</div>
+                </div>
+                {% endfor %}
+
+                {% for i in 1|rjust:o.professional_project_courses%}
+								{% if o.professional_project_courses %}
+                	<div class="eight fields">
+                		<div class="field">
+                			<div >
+                				<h4><b>Professional Project : </b></h4>
+                			</div>
+                		</div>
+										<div class="three wide field">
+                			<div class="ui input focus">
+												<select name="ppcbranch" class="ui dropdown">
+													{% if item ==  "CSE"%}
+                                                    <option value="{{item}}">Computer Science and Engineering</option>
+                                                    {%elif item == "ME"%}
+                                                    <option value="{{item}}">Mechanical Engineering</option>
+                                                    {%elif item == "ECE"%}
+                                                    <option value="{{item}}">Electronics and Communication Engineering</option>
+                                                    {%elif item == "DES"%}
+                                                    <option value="{{item}}">Design</option>
+                                                    {% endif %}
+                			</div>
+                		</div>
+                		<div class="three wide field">
+                			<div class="ui input focus">
+                				<input type="text" name="ppccourse_id" placeholder="Course ID">
+                			</div>
+                		</div>
+                		<div class="four wide field">
+                			<select name="ppccourse" class="ui dropdown">
+                				<option value="">Course Name</option>
+                				{% for p in course_list %}
+                				<option value="{{p.course_name}}">{{p.course_name}}</option>
+                				{% endfor %}
+                			</select>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="ppccourse_credits" placeholder="4">
+                			</div>
+                		</div>
+                		<div class=" two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="ppccourse_lecture" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="ppccourse_tutorial" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="ppccourse_practical" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="ppccourse_discussion" placeholder="0">
+                			</div>
+                		</div>
+                	</div>
+								{% endif %}
+                {% endfor %}
+
+                {% for i in 1|rjust:o.professional_lab_courses%}
+								{% if o.professional_lab_courses %}
+                	<div class="eight fields">
+                		<div class="field">
+                			<div >
+                				<h4><b>Professional Lab : </b></h4>
+                			</div>
+                		</div>
+										<div class="three wide field">
+                			<div class="ui input focus">
+												<select name="plcbranch" class="ui dropdown">
+													{% if item ==  "CSE"%}
+                                                    <option value="{{item}}">Computer Science and Engineering</option>
+                                                    {%elif item == "ME"%}
+                                                    <option value="{{item}}">Mechanical Engineering</option>
+                                                    {%elif item == "ECE"%}
+                                                    <option value="{{item}}">Electronics and Communication Engineering</option>
+                                                    {%elif item == "DES"%}
+                                                    <option value="{{item}}">Design</option>
+                                                    {% endif %}
+	                			</select>
+                			</div>
+                		</div>
+                		<div class="three wide field">
+                			<div class="ui input focus">
+                				<input type="text" name="plccourse_id" placeholder="Course ID">
+                			</div>
+                		</div>
+                		<div class="four wide field">
+                			<select name="plccourse" class="ui dropdown">
+                				<option value="">Course Name</option>
+                				{% for p in course_list %}
+                				<option value="{{p.course_name}}">{{p.course_name}}</option>
+                				{% endfor %}
+                			</select>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="plccourse_credits" placeholder="4">
+                			</div>
+                		</div>
+                		<div class=" two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="plccourse_lecture" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="plccourse_tutorial" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="plccourse_practical" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="plccourse_discussion" placeholder="0">
+                			</div>
+                		</div>
+                	</div>
+								{% endif %}
+                {% endfor %}
+                {% endfor %}
+                <div style="font-weight: bold; text-align: left;"><center><h3>Common Core Courses  :</h3></center></div>
+                {% for i in 1|rjust:o.Core_engineering_science_courses%}
+								{% if o.Core_engineering_science_courses %}
+                	<div class="eight fields">
+                		<div class="field">
+                			<div >
+                				<h4><b> Engineering Science : </b></h4>
+                			</div>
+                		</div>
+										<div class="three wide field">
+                			<div class="ui input focus">
+												<select name="cescbranch" class="ui dropdown">
+													<option value="">Branch</option>
+													<option value="CSE">Computer Science and Engineering</option>
+													<option value="ECE">Electronics and Communication Engineering</option>
+													<option value="ME">Mechanical Engineering</option>
+													<option value="Btech_ALL">Btech All</option>
+													<option value="Common">Common</option>
+													<option value="DES">Design</option>
+	                			</select>
+                			</div>
+                		</div>
+                		<div class="three wide field">
+                			<div class="ui input focus">
+                				<input type="text" name="cesccourse_id" placeholder="Course ID">
+                			</div>
+                		</div>
+                		<div class="four wide field">
+                			<select name="cesccourse" class="ui dropdown">
+                				<option value="">Course Name</option>
+                				{% for p in course_list %}
+                				<option value="{{p.course_name}}">{{p.course_name}}</option>
+                				{% endfor %}
+                			</select>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cesccourse_credits" placeholder="4">
+                			</div>
+                		</div>
+                		<div class=" two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cesccourse_lecture" placeholder="L">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cesccourse_tutorial" placeholder="T">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cesccourse_practical" placeholder="P">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cesccourse_discussion" placeholder="D">
+                			</div>
+                		</div>
+                	</div>
+								{% endif %}
+                {% endfor %}
+
+                {% for i in 1|rjust:o.Core_natural_science_courses%}
+								{% if o.Core_natural_science_courses %}
+                	<div class="eight fields">
+                		<div class="field">
+                			<div >
+                				<h4><b> Natural Science : </b></h4>
+                			</div>
+                		</div>
+										<div class="three wide field">
+                			<div class="ui input focus">
+												<select name="cnscbranch" class="ui dropdown">
+													<option value="">Branch</option>
+													<option value="CSE">Computer Science and Engineering</option>
+													<option value="ECE">Electronics and Communication Engineering</option>
+													<option value="ME">Mechanical Engineering</option>
+													<option value="Btech_ALL">Btech All</option>
+													<option value="Common">Common</option>
+													<option value="DES">Design</option>
+	                			</select>
+                			</div>
+                		</div>
+                		<div class="three wide field">
+                			<div class="ui input focus">
+                				<input type="text" name="cnsccourse_id" placeholder="Course ID">
+                			</div>
+                		</div>
+                		<div class="four wide field">
+                			<select name="cnsccourse" class="ui dropdown">
+                				<option value="">Course Name</option>
+                				{% for p in course_list %}
+                				<option value="{{p.course_name}}">{{p.course_name}}</option>
+                				{% endfor %}
+                			</select>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cnsccourse_credits" placeholder="4">
+                			</div>
+                		</div>
+                		<div class=" two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cnsccourse_lecture" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cnsccourse_tutorial" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cnsccourse_practical" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cnsccourse_discussion" placeholder="0">
+                			</div>
+                		</div>
+                	</div>
+								{% endif %}
+                {% endfor %}
+
+                {% for i in 1|rjust:o.Core_humanities_courses%}
+								{% if o.Core_humanities_courses %}
+                	<div class="eight fields">
+                		<div class="field">
+                			<div >
+                				<h4><b> Humanities : </b></h4>
+                			</div>
+                		</div>
+										<div class="three wide field">
+                			<div class="ui input focus">
+												<select name="chcbranch" class="ui dropdown">
+													<option value="">Branch</option>
+													<option value="CSE">Computer Science and Engineering</option>
+													<option value="ECE">Electronics and Communication Engineering</option>
+													<option value="ME">Mechanical Engineering</option>
+													<option value="Btech_ALL">Btech All</option>
+													<option value="Common">Common</option>
+													<option value="DES">Design</option>
+	                			</select>
+                			</div>
+                		</div>
+                		<div class="three wide field">
+                			<div class="ui input focus">
+                				<input type="text" name="chccourse_id" placeholder="Course ID">
+                			</div>
+                		</div>
+                		<div class="four wide field">
+                			<select name="chccourse" class="ui dropdown">
+                				<option value="">Course Name</option>
+                				{% for p in course_list %}
+                				<option value="{{p.course_name}}">{{p.course_name}}</option>
+                				{% endfor %}
+                			</select>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="chccourse_credits" placeholder="4">
+                			</div>
+                		</div>
+                		<div class=" two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="chccourse_lecture" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="chccourse_tutorial" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="chccourse_practical" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="chccourse_discussion" placeholder="0">
+                			</div>
+                		</div>
+                	</div>
+								{% endif %}
+                {% endfor %}
+
+                {% for i in 1|rjust:o.Core_design_courses%}
+								{% if o.Core_design_courses %}
+                	<div class="eight fields">
+                		<div class="field">
+                			<div >
+                				<h4><b>Design : </b></h4>
+                			</div>
+                		</div>
+										<div class="three wide field">
+                			<div class="ui input focus">
+												<select name="cdcbranch" class="ui dropdown">
+													<option value="">Branch</option>
+													<option value="CSE">Computer Science and Engineering</option>
+													<option value="ECE">Electronics and Communication Engineering</option>
+													<option value="ME">Mechanical Engineering</option>
+													<option value="Btech_ALL">Btech All</option>
+													<option value="Common">Common</option>
+													<option value="DES">Design</option>
+	                			</select>
+                			</div>
+                		</div>
+                		<div class="three wide field">
+                			<div class="ui input focus">
+                				<input type="text" name="cdccourse_id" placeholder="Course ID">
+                			</div>
+                		</div>
+                		<div class="four wide field">
+                			<select name="cdccourse" class="ui dropdown">
+                				<option value="">Course Name</option>
+                				{% for p in course_list %}
+                				<option value="{{p.course_name}}">{{p.course_name}}</option>
+                				{% endfor %}
+                			</select>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cdccourse_credits" placeholder="4">
+                			</div>
+                		</div>
+                		<div class=" two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cdccourse_lecture" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cdccourse_tutorial" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cdccourse_practical" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cdccourse_discussion" placeholder="0">
+                			</div>
+                		</div>
+                	</div>
+								{% endif %}
+                {% endfor %}
+
+                {% for i in 1|rjust:o.Core_manufacturing_courses%}
+								{% if o.Core_manufacturing_courses %}
+                	<div class="eight fields">
+                		<div class="field">
+                			<div >
+                				<h4><b>Manufacturing : </b></h4>
+                			</div>
+                		</div>
+										<div class="three wide field">
+                			<div class="ui input focus">
+												<select name="cmcbranch" class="ui dropdown">
+													<option value="">Branch</option>
+													<option value="CSE">Computer Science and Engineering</option>
+													<option value="ECE">Electronics and Communication Engineering</option>
+													<option value="ME">Mechanical Engineering</option>
+													<option value="Btech_ALL">Btech All</option>
+													<option value="Common">Common</option>
+													<option value="DES">Design</option>
+	                			</select>
+                			</div>
+                		</div>
+                		<div class="three wide field">
+                			<div class="ui input focus">
+                				<input type="text" name="cmccourse_id" placeholder="Course ID">
+                			</div>
+                		</div>
+                		<div class="four wide field">
+                			<select name="cmccourse" class="ui dropdown">
+                				<option value="">Course Name</option>
+                				{% for p in course_list %}
+                				<option value="{{p.course_name}}">{{p.course_name}}</option>
+                				{% endfor %}
+                			</select>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cmccourse_credits" placeholder="4">
+                			</div>
+                		</div>
+                		<div class=" two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cmccourse_lecture" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cmccourse_tutorial" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cmccourse_practical" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cmccourse_discussion" placeholder="0">
+                			</div>
+                		</div>
+                	</div>
+								{% endif %}
+                {% endfor %}
+
+                {% for i in 1|rjust:o.Core_management_science_courses%}
+								{% if o.Core_management_science_courses %}
+                	<div class="eight fields">
+                		<div class="field">
+                			<div >
+                				<h4><b>Management Science </b></h4>
+                			</div>
+                		</div>
+										<div class="three wide field">
+                			<div class="ui input focus">
+												<select name="cmscbranch" class="ui dropdown">
+													<option value="">Branch</option>
+													<option value="CSE">Computer Science and Engineering</option>
+													<option value="ECE">Electronics and Communication Engineering</option>
+													<option value="ME">Mechanical Engineering</option>
+													<option value="Btech_ALL">Btech All</option>
+													<option value="Common">Common</option>
+													<option value="DES">Design</option>
+	                			</select>
+                			</div>
+                		</div>
+                		<div class="three wide field">
+                			<div class="ui input focus">
+                				<input type="text" name="cmsccourse_id" placeholder="Course ID">
+                			</div>
+                		</div>
+                		<div class="four wide field">
+                			<select name="cmsccourse" class="ui dropdown">
+                				<option value="">Course Name</option>
+                				{% for p in course_list %}
+                				<option value="{{p.course_name}}">{{p.course_name}}</option>
+                				{% endfor %}
+                			</select>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cmsccourse_credits" placeholder="4">
+                			</div>
+                		</div>
+                		<div class=" two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cmsccourse_lecture" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cmsccourse_tutorial" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cmsccourse_practical" placeholder="0">
+                			</div>
+                		</div>
+                		<div class="two wide field">
+                			<div class="ui input focus">
+                				<input type="number" name="cmsccourse_discussion" placeholder="0">
+                			</div>
+                		</div>
+                	</div>
+								{% endif %}
+                {% endfor %}
+
+
+
+
+                <div class="ui divider"></div>
+                <button class="ui primary button" type="submit" id="add_curr_course_res_set{{forloop.counter}}">Set</button>
+            </div>
+        </form>
+        {% else %}
+        <div id="add_curr_course_res_warning{{forloop.counter}}" hidden="true"><h2>Please firste define the no. of courses and their respective types in add semester column.</h2></div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+</div>
+
+
+
+<p id="add_curr_course_res_hidden" hidden="true" pro="{{programme}}" batch="{{batch}}" sem1="{{obj.sem1}}" sem2="{{obj.sem2}}" sem3="{{obj.sem3}}" sem4="{{obj.sem4}}" sem5="{{obj.sem5}}" sem6="{{obj.sem6}}" sem7="{{obj.sem7}}" sem8="{{obj.sem8}}">{{programme}} {{batch}}</p>
+
+
+
+
+<script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
+<script type="text/javascript" src="{% static 'globals/js/datepicker.js' %}"></script>
+<script type="text/javascript" src="{% static 'globals/js/tablesort.js' %}"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+    	var i;
+      $('.step').on('click',function(e){
+      	i = $(this).attr('data');
+      	$('.step').removeClass('active');
+  		$(this).addClass('active');
+  		$('.sem_info').hide();
+  		$('#add_curr_course_res_'+i).show();
+			// alert("add_curr_course_res_set"+i);
+      });
+
+      $('#add_curr_course_res_set_course').on('click',function(e){
+      	e.preventDefault();
+      	$('.add_curr_course_res').hide();
+      	$('#add_curr_course_res_form'+i).show();
+      	$('#add_curr_course_res_modal').modal('show');
+
+      	$('#add_curr_course_res_warning'+i).show();
+      	$('.add_curr_course_res_data').text("Semester "+i+", "+$('#add_curr_course_res_hidden').text());
+				// alert("add_curr_course_res_set"+i);
+      });
+
+			$('#add_curr_course_res_set'+i).submit(function(e){
+	          e.preventDefault();
+	          var friendForm = $(this);
+	          var posting = $.post( friendForm.attr('action'), friendForm.serialize() );
+						alert("kgvdnk");
+	          posting.done(function(data) {
+							$('#add_curr_course_res_modal').modal('hide');
+	              alert('Courses Added Successfully');
+
+	          });
+	          posting.fail(function(data) {
+	              alert('Failed to add Courses');
+	              window.location = "/academic-procedures/main/";
+	          });
+	      });
+
+    });
+
+  </script>
+  <script type="text/javascript">
+  fac_arr = new Array();
+  f_arr = new Array();
+  m = new Map();
+  function add(s,c) {
+    var a = $(`<div class="eight fields" id="`+c+`_course_`+s+c+`">
+                        <div class="field">
+                            <div >
+                                <h4><b>Professional Elective : </b></h4>
+                            </div>
+                        </div>
+                                        <div class="three wide field">
+                            <div class="ui input focus">
+                                                <select name="pecbranch" class="ui dropdown">
+                                                    <option value="">Branch</option>
+                                                    <option value="CSE">Computer Science and Engineering</option>
+                                                    <option value="ME">Mechanical Engineering</option>
+                                                    <option value="ECE">Electronics and Communication Engineering</option>
+                                                    <option value="DES">Design</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="three wide field">
+                            <div class="ui input focus">
+                                <input type="text" name="pcccourse_id" placeholder="Course ID">
+                            </div>
+                        </div>
+                        <div class="four wide field">
+                            <select name="pcccourse" class="ui dropdown">
+                                <option value="">Course Name</option>
+                                {% for p in course_list %}
+                                <option value="{{p.course_name}}">{{p.course_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="two wide field">
+                            <div class="ui input focus">
+                                <input type="number" name="peccourse_credits" placeholder="4">
+                            </div>
+                        </div>
+                        <div class=" two wide field">
+                            <div class="ui input focus">
+                                <input type="number" name="peccourse_lecture" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="two wide field">
+                            <div class="ui input focus">
+                                <input type="number" name="peccourse_tutorial" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="two wide field">
+                            <div class="ui input focus">
+                                <input type="number" name="peccourse_practical" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="two wide field">
+                            <div class="ui input focus">
+                                <input type="number" name="peccourse_discussion" placeholder="0">
+                            </div>
+                        </div>
+                    </div>`);
+    $('#_test_add_'+s).append(a);
+  }
+function del(s,c) {
+      $('#'+c+'_course_'+s+c).remove();
+  }
+</script>

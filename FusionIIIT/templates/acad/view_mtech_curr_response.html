@@ -1,0 +1,78 @@
+{% load static %}
+
+<div class="">
+
+<h1>Batch : {{batch}}</h1>
+  <h2>Semester 1:</h2>
+  {% if sem1 %}
+  <ol>
+    {% for course in sem1 %}
+      <li>
+        <h3> Course Name :{{course.curr_course.course_name}} ({{course.course_credits}}C , {{course.course_lecture}}L , {{course.course_tutorial}}T, {{course.course_practical}}P , {{course.course_discussion}}D)</h3>
+        <h3>Course Type : {{course.course_type}}</h3>
+      </li>
+      <hr>
+    {% endfor %}
+  </ol>
+  {% else %}
+  <h4>No Courses added in this semester till now.</h4>
+  <br>
+  {% endif %}
+
+  <h2>Semester 2:</h2>
+  {% if sem2 %}
+  <ol>
+    {% for course in sem2 %}
+      <li>
+        <h3> Course Name :{{course.curr_course.course_name}} ({{course.course_credits}}C , {{course.course_lecture}}L , {{course.course_tutorial}}T, {{course.course_practical}}P , {{course.course_discussion}}D)</h3>
+        <h3>Course Type : {{course.course_type}}</h3>
+      </li>
+      <hr>
+    {% endfor %}
+  </ol>
+  {% else %}
+  <h4>No Courses added in this semester till now.</h4>
+  <br>
+  {% endif %}
+
+  <h2>Semester 3:</h2>
+  {% if sem3 %}
+  <ol>
+    {% for course in sem3 %}
+      <li>
+        <h3> Course Name :{{course.curr_course.course_name}} ({{course.course_credits}}C , {{course.course_lecture}}L , {{course.course_tutorial}}T, {{course.course_practical}}P , {{course.course_discussion}}D)</h3>
+        <h3>Course Type : {{course.course_type}}</h3>
+      </li>
+      <hr>
+    {% endfor %}
+  </ol>
+  {% else %}
+  <h4>No Courses added in this semester till now.</h4>
+  <br>
+  {% endif %}
+
+  <h2>Semester 4:</h2>
+  {% if sem4 %}
+  <ol>
+    {% for course in sem4 %}
+      <li>
+        <h3> Course Name :{{course.curr_course.course_name}} ({{course.course_credits}}C , {{course.course_lecture}}L , {{course.course_tutorial}}T, {{course.course_practical}}P , {{course.course_discussion}}D)</h3>
+        <h3>Course Type : {{course.course_type}}</h3>
+      </li>
+      <hr>
+    {% endfor %}
+  </ol>
+  {% else %}
+  <h4>No Courses added in this semester till now.</h4>
+  <br>
+  {% endif %}
+
+
+
+
+
+
+
+
+
+</div>

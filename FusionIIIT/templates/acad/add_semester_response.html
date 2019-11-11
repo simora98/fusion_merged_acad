@@ -1,0 +1,417 @@
+{% load static %}
+<center>
+
+{% if sem == 8 %}
+<div class="ui  steps">
+	{% for i in 1|rjust:4 %}
+	<div class="step" data="{{forloop.counter}}">
+		<i class="ui icon" id="add_sem_res_icon{{forloop.counter}}"></i>
+		<div class="content">
+			<div class="title" id="add_sem_res_{{forloop.counter}}">Sem{{forloop.counter}}</div>
+		</div>
+	</div>
+	{% endfor%}
+</div>
+<div class="ui  steps">
+	{% for i in 1|rjust:4 %}
+	<div class=" step" data="{{forloop.counter|add:4}}">
+		<i class="ui icon" id="add_sem_res_icon{{forloop.counter|add:4}}"></i>
+		<div class="content">
+			<div class="title" id="add_sem_res_{{forloop.counter|add:4}}" >Sem{{forloop.counter|add:4}}</div>
+		</div>
+	</div>
+	{% endfor%}
+</div>
+{% endif %}
+
+{% if sem == 4 %}
+<div class="ui  steps">
+	{% for i in 1|rjust:4 %}
+		<div class="step" data="{{forloop.counter}}">
+			<i class="ui icon" id="add_sem_mtech_icon{{forloop.counter}}"></i>
+			<div class="content">
+				<div class="title" id="add_sem_mtech_{{forloop.counter}}">Sem{{forloop.counter}}</div>
+			</div>
+		</div>
+		{% endfor%}
+	</div>
+{% endif %}
+</center>
+<br>
+
+<input type="text" name="programme" id="programme" hidden="True" value="{{programme}}">
+<input type="number" name="batch" id="batch" hidden="True" value="{{batch}}">
+
+<div class="ui modal test1" id="add_sem_mtech_modal">
+    <i class="close icon"></i>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+        <form class="ui large form" id="add_sem_mtech_form">
+            <div class="ui  segment">
+
+
+                <div class="ui dividing header">
+                                <p id="add_sem_mtech_data" style="background-color: #E5E7E9;"></p>
+                </div><br>
+
+                <div class="fields">
+                	<div class="field">
+                		<label for="total_courses" style="background-color:#F2F3F4 ;"><h3>Total Courses</h3></label>
+                		<div class="ui input focus ">
+                			<input id="total_courses" type="number" name="total_courses" required="true">
+                		</div>
+                	</div>
+                </div><br>
+
+                <div class="two fields">
+                    <div class="field">
+											<label for="core_courses" style="background-color:#F2F3F4 ;"><h3>Core Courses</h3></label>
+											<div class="ui input focus">
+                            <input id="core_courses" type="number" name="core_courses" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+											<label for="elective_courses" style="background-color:#F2F3F4 ;"><h3>Elective Courses</h3></label>
+											  <div class="ui input focus">
+                            <input id="elective_courses" type="number" name="elective_courses" required="true">
+                        </div>
+                    </div>
+                </div><br>
+
+								<div class="two fields">
+                    <div class="field">
+											<label for="seminar" style="background-color:#F2F3F4 ;"><h3>Seminar</h3></label>
+											<div class="ui input focus">
+                            <input id="seminar" type="number" name="seminar" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+											<label for="lab_courses" style="background-color:#F2F3F4 ;"><h3>Lab Courses</h3></label>
+											  <div class="ui input focus">
+                            <input id="lab_courses" type="number" name="lab_courses" required="true">
+                        </div>
+                    </div>
+                </div><br>
+
+								<div class="fields">
+                    <div class="field">
+											<label for="thesis" style="background-color:#F2F3F4 ;"><h3>Thesis</h3></label>
+											  <div class="ui input focus">
+                            <input id="thesis" type="number" name="thesis" required="true">
+                        </div>
+                    </div>
+                </div><br>
+
+
+
+
+
+
+                <div class="ui divider"></div>
+                <div class="ui primary button" id="add_sem_mtech_submit">Set Semester</div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+
+
+<div class="ui modal test" id="add_sem_res_modal">
+    <i class="close icon"></i>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+        <form class="ui large form" id="add_sem_res_form">
+            <div class="ui  segment">
+
+
+                <div class="ui dividing header">
+                                <p id="add_sem_res_data" style="background-color: #E5E7E9;"></p>
+                </div><br>
+
+                <div class="two fields">
+                	<div class="field">
+                		<label for="total_number_of_courses" style="background-color:#F2F3F4 ;"><h3>Total Courses</h3></label>
+                		<div class="ui input focus ">
+                			<input id="totalCourses" type="number" name="total_number_of_courses" required="true">
+                		</div>
+                	</div>
+	                <div class="field">
+	                	<label><h3 class="ui dividing header" style="background-color:#F2F3F4 ; ">PBI</h3></label>
+                        <select class="ui dropdown" name="add_sem_res_pbi" id="add_sem_res_pbi" required="true">
+                            <option value="True">Allowed</option>
+	                		<option value="False" selected="true">Not Allowed</option>
+	                	</select>
+	                </div>
+                </div><br>
+
+                <h3 class="ui dividing header" style="width: 50%;font-weight: bolder;font-stretch: semi-expanded;background-color:#F2F3F4 ;">Professional</h3>
+  				<div class="three fields">
+
+                    <div class="field">
+                        <label for="professional_core_courses">Core</label>
+                        <div class="ui input focus">
+                            <input id="profcore" type="number" name="professional_core_courses" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="professional_elective_courses">Elective </label>
+                        <div class="ui input focus">
+                            <input id="profelective" type="number" name="professional_elective_courses" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="professional_project_courses">Project </label>
+                        <div class="ui input focus">
+                            <input id="profproject" type="number" name="professional_project_courses" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="professional_lab_courses">Lab </label>
+                        <div class="ui input focus">
+                            <input id="proflab" type="number" name="professional_lab_courses" required="true">
+                        </div>
+                    </div>
+                </div><br>
+
+
+                <h3 class="ui dividing header" style="width: 50%; font-weight: bolder;font-stretch: semi-expanded; background-color:#F2F3F4 ; " >Core</h3>
+                <div class="three fields" >
+                    <div class="field">
+                        <label for="escourses">Engineering Science Courses</label>
+                        <div class="ui input focus">
+                            <input id="es" type="number" name="escourses" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="nscourses">Natural Science Courses</label>
+                        <div class="ui input focus">
+                            <input id="ns" type="number" name="nscourses" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="hscourses">Humanities Courses</label>
+                        <div class="ui input focus">
+                            <input id="hs" type="number" name="hscourses" required="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="three fields">
+                    <div class="field">
+                        <label for="dscourses">Design Courses</label>
+                        <div class="ui input focus">
+                            <input id="ds" type="number" name="dscourses" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="mncourses">Manufacturing Courses</label>
+                        <div class="ui input focus">
+                            <input id="mn" type="number" name="mncourses" required="true">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="mscourses">Management Science Courses</label>
+                        <div class="ui input focus">
+                            <input id="ms" type="number" name="mscourses" required="true">
+                        </div>
+                    </div>
+                </div><br>
+
+
+
+                <div class="ui divider"></div>
+                <div class="ui primary button" id="add_sem_res_submit">Set Semester</div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+
+
+<p id="add_sem_res_hidden" hidden="true" pro="{{programme}}" batch="{{batch}}" sem1="{{obj.sem1}}" sem2="{{obj.sem2}}" sem3="{{obj.sem3}}" sem4="{{obj.sem4}}" sem5="{{obj.sem5}}" sem6="{{obj.sem6}}" sem7="{{obj.sem7}}" sem8="{{obj.sem8}}">{{programme}} {{batch}}</p>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	alert("1");
+	var sem=0;
+	var programme = $('#add_sem_res_hidden').attr('pro');
+	alert(programme);
+	if (programme == "BTECH"){
+		for(var i=1; i<=8; i++){
+			if($('#add_sem_res_hidden').attr('sem'+i) != "None"){
+				$('#add_sem_res_icon'+i).addClass('green');
+				$('#add_sem_res_icon'+i).addClass('checkmark');
+			}
+			else{
+				$('#add_sem_res_icon'+i).addClass('exclamation');
+			}
+		}
+	}
+
+	else if (programme == "MTECH"){
+		for(var i=1; i<=4; i++){
+			if($('#add_sem_res_hidden').attr('sem'+i) != "None"){
+				$('#add_sem_mtech_icon'+i).addClass('green');
+				$('#add_sem_mtech_icon'+i).addClass('checkmark');
+			}
+			else{
+				$('#add_sem_mtech_icon'+i).addClass('exclamation');
+			}
+		}
+	}
+
+	$('.step').click(function (event) {
+
+		if (programme == "BTECH"){
+			document.getElementById('add_sem_res_form').reset();
+			$('.step').removeClass('active');
+			$(this).addClass('active');
+			sem = parseInt($(this).attr('data'));
+					$('#add_sem_res_modal').modal('show');
+			$('#add_sem_res_data').text("Semester "+$(this).attr('data')+", "+$('#add_sem_res_hidden').text());
+		}
+		else if (programme == "MTECH"){
+			document.getElementById('add_sem_mtech_form').reset();
+			$('.step').removeClass('active');
+			$(this).addClass('active');
+			sem = parseInt($(this).attr('data'));
+					$('#add_sem_mtech_modal').modal('show');
+			$('#add_sem_mtech_data').text("Semester "+$(this).attr('data')+", "+$('#add_sem_mtech_hidden').text());
+		}
+
+	});
+
+
+
+	if ($('#add_sem_res_hidden').attr('pro') == "BTECH"){
+			$('#add_sem_res_submit').click(function (event) {
+
+					var batch = parseInt($('#add_sem_res_hidden').attr('batch'));
+
+						var totalcourses = parseInt(document.getElementById("totalCourses").value);
+
+						var profcore = parseInt(document.getElementById("profcore").value);
+						var profelective = parseInt(document.getElementById("profelective").value);
+						var profproject = parseInt(document.getElementById("profproject").value);
+						var proflab = parseInt(document.getElementById("proflab").value);
+
+						var es = parseInt(document.getElementById("es").value);
+						var ns = parseInt(document.getElementById("ns").value);
+						var hs = parseInt(document.getElementById("hs").value);
+						var ds = parseInt(document.getElementById("ds").value);
+						var mn = parseInt(document.getElementById("mn").value);
+						var ms = parseInt(document.getElementById("ms").value);
+
+						var pbi = document.getElementById("add_sem_res_pbi").value;
+						alert(pbi);
+
+						if(profcore+profelective+profproject+proflab+es+ns+hs+ds+mn+ms == totalcourses){
+							$.ajax({
+								type:"POST",
+										url: "/acad/set_batch_semester/",
+										data:{
+											programme:programme,
+											batch : batch,
+											semester:sem,
+											total_number_of_courses:totalcourses,
+											professional_core_courses:profcore,
+											professional_elective_courses:profelective,
+											professional_project_courses:profproject,
+											professional_lab_courses: proflab,
+											escourses: es,
+											hscourses :hs,
+											dscourses:ds,
+											mncourses :mn,
+											nscourses :ns,
+											mscourses:ms,
+											pbi : pbi,
+										csrfmiddlewaretoken: '{{ csrf_token }}'
+										},
+										success: function( data )
+										{
+											if(data.done){
+											$('#add_sem_res_icon'+sem).removeClass('exclamation');
+											$('#add_sem_res_icon'+sem).addClass('green');
+														$('#add_sem_res_icon'+sem).addClass('checkmark');
+									}
+											alert(data.msg);
+											$('#add_sem_res_modal').modal('hide');
+										}
+							});
+						}
+
+							else{
+								alert("Total Courses doesn't match with the entered courses !!");
+							}
+
+
+					});
+		}
+
+
+
+		else if(programme=="MTECH"){
+				$('#add_sem_mtech_submit').click(function (event) {
+
+							var programme = $('#add_sem_res_hidden').attr('pro');
+
+							var batch = parseInt($('#add_sem_res_hidden').attr('batch'));
+
+							var total_courses = parseInt(document.getElementById("total_courses").value);
+
+							var core_courses = parseInt(document.getElementById("core_courses").value);
+							var elective_courses = parseInt(document.getElementById("elective_courses").value);
+							var seminar = parseInt(document.getElementById("seminar").value);
+							var lab_courses = parseInt(document.getElementById("lab_courses").value);
+
+							var thesis = parseInt(document.getElementById("thesis").value)
+
+							if(core_courses+elective_courses+seminar+lab_courses+thesis == total_courses){
+								$.ajax({
+									type:"POST",
+											url: "/acad/set_mtech_semester/",
+											data:{
+												programme:programme,
+												batch : batch,
+												semester:sem,
+												total_courses:total_courses,
+												core_courses:core_courses,
+												elective_courses:elective_courses,
+												seminar:seminar,
+												lab_courses: lab_courses,
+												thesis: thesis,
+											csrfmiddlewaretoken: '{{ csrf_token }}'
+											},
+											success: function( data )
+											{
+												if(data.done){
+												$('#add_sem_mtech_icon'+sem).removeClass('exclamation');
+												$('#add_sem_mtech_icon'+sem).addClass('green');
+															$('#add_sem_mtech_icon'+sem).addClass('checkmark');
+										}
+												alert(data.msg);
+												$('#add_sem_mtech_modal').modal('hide');
+											}
+								});
+							}
+
+								else{
+									alert("Total Courses doesn't match with the entered courses !!");
+								}
+
+
+						});
+			}
+
+});
+</script>
+
+
+
+
+
+<script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
+<script type="text/javascript" src="{% static 'globals/js/datepicker.js' %}"></script>
+<script type="text/javascript" src="{% static 'globals/js/tablesort.js' %}"></script>
