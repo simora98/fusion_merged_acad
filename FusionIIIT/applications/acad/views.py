@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from .models import BatchSemester,Course,CurriculumCourse,CurriculumInstructor,BtechCurriculum,Constants,MtechCurriculum,MtechSemester
 from django.template.loader import render_to_string
 from django.http import JsonResponse
-
+from django.db import transaction
 
 # Create your views here.
 
@@ -918,6 +918,7 @@ def get_mtech_semesters(request):
         return JsonResponse({"success": True, "msg": "There is no curriculum for given batch and programme.",'done' : False })
 
 
+@transaction.atomic
 def add_curr_course(request):
     seme =1
     batch =2018
@@ -959,47 +960,63 @@ def add_curr_course(request):
 
     ind =0
 
-    for val in val_list:
-        for x in range(val):
-                    for key, values in request.POST.lists():
-                        if (key == prefix_list[ind] + 'branch'):
-                            a.append(values[x])
-                        elif (key == prefix_list[ind] + 'course_id'):
-                            b.append(values[x])
-                        elif (key == prefix_list[ind] + 'course'):
-                            c.append(Course.objects.all().filter(course_name=values[x]).first())
-                        elif (key == prefix_list[ind] + 'course_credits'):
-                            d.append(values[x])
-                        elif (key == prefix_list[ind] + 'course_lecture'):
-                            e.append(values[x])
-                        elif (key == prefix_list[ind] + 'course_tutorial'):
-                            f.append(values[x])
-                        elif (key == prefix_list[ind] + 'course_practical'):
-                            g.append(values[x])
-                        elif (key == prefix_list[ind] + 'course_discussion'):
-                            h.append(values[x])
+    with transaction.atomic():
+        try:
+            for val in val_list:
+                for x in range(val):
+                            for key, values in request.POST.lists():
+                                if (key == prefix_list[ind] + 'branch'):
+                                    a.append(values[x])
+                                elif (key == prefix_list[ind] + 'course_id'):
+                                    b.append(values[x])
+                                elif (key == prefix_list[ind] + 'course'):
+                                    c.append(Course.objects.all().filter(course_name=values[x]).first())
+                                elif (key == prefix_list[ind] + 'course_credits'):
+                                    d.append(values[x])
+                                elif (key == prefix_list[ind] + 'course_lecture'):
+                                    e.append(values[x])
+                                elif (key == prefix_list[ind] + 'course_tutorial'):
+                                    f.append(values[x])
+                                elif (key == prefix_list[ind] + 'course_practical'):
+                                    g.append(values[x])
+                                elif (key == prefix_list[ind] + 'course_discussion'):
+                                    h.append(values[x])
 
-        for x in range(a.__len__()):
-            if x >= a.__len__():
-                break
-            CurriculumCourse.objects.create(branch=a[x],course_type=c_type[ind],semester=sem,curr_course=c[x],course_id=b[x],course_credits=d[x],course_lecture=e[x],course_tutorial=f[x],course_practical=g[x],course_discussion=h[x])
+                for x in range(a.__len__()):
+                    s_obj = None
+                    s_obj = CurriculumCourse.objects.all().filter(course_id=b[x], semester=sem).first()
+                    if s_obj:
+                        s_obj.branch=a[x]
+                        s_obj.course_type=c_type[ind]
+                        s_obj.semester=sem
+                        s_obj.curr_course=c[x]
+                        s_obj.course_id=b[x]
+                        s_obj.course_credits=d[x]
+                        s_obj.course_lecture=e[x]
+                        s_obj.course_tutorial=f[x]
+                        s_obj.course_practical=g[x]
+                        s_obj.course_discussion=h[x]
+                        s_obj.save()
 
-        a.clear()
-        b.clear()
-        c.clear()
-        d.clear()
-        e.clear()
-        f.clear()
-        g.clear()
-        h.clear()
+                    else :
+                        s_obj = CurriculumCourse(branch=a[x],course_type=c_type[ind],semester=sem,curr_course=c[x],course_id=b[x],course_credits=d[x],course_lecture=e[x],course_tutorial=f[x],course_practical=g[x],course_discussion=h[x])
+                        s_obj.save()
+                a.clear()
+                b.clear()
+                c.clear()
+                d.clear()
+                e.clear()
+                f.clear()
+                g.clear()
+                h.clear()
 
-        ind+=1
+                ind+=1
+        except :
+            return JsonResponse({ "msg": "Courses Successfully not added.",'done' : False })
 
-    data = render_to_string('acad/add_curr_course_response.html',
-                                {'sem' :8
-                                }, request)
-    obj = json.dumps({'html' : data, 'msg' : 'Courses Added', 'done' : True})
+    obj = json.dumps({ 'msg' : 'Courses Successfully added.', 'done' : True})
     return HttpResponse(obj, content_type = 'application/json')
+
 
 
 def add_mtech_curr_course(request):

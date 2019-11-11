@@ -109,7 +109,8 @@
         {% endfor %}
 <br>
     <div style="text-align: center;">
-        <button class="ui primary button" id="add_curr_course_res_set_course">Set Courses</button>
+        <button class="ui primary button add_curr_course_res_set_course">Set Courses</button>
+        <button class="ui yellow button add_curr_course_res_set_course" >Edit Courses</button>
     </div>
 
 
@@ -232,11 +233,11 @@
                         </div>
                 		<div class="three wide field">
                             <div class="ui input focus">
-                                <input type="text" name="pcccourse_id" placeholder="Course ID">
+                                <input type="text" name="peccourse_id" placeholder="Course ID">
                             </div>
                         </div>
                         <div class="four wide field">
-                            <select name="pcccourse" class="ui dropdown">
+                            <select name="peccourse" class="ui dropdown">
                                 <option value="">Course Name</option>
                                 {% for p in course_list %}
                                 <option value="{{p.course_name}}">{{p.course_name}}</option>
@@ -790,7 +791,7 @@
 
 
                 <div class="ui divider"></div>
-                <button class="ui primary button" type="submit" id="add_curr_course_res_set{{forloop.counter}}">Set</button>
+                <div  class="ui primary button add_curr_course_res_set" >Set</div>
             </div>
         </form>
         {% else %}
@@ -823,30 +824,38 @@
 			// alert("add_curr_course_res_set"+i);
       });
 
-      $('#add_curr_course_res_set_course').on('click',function(e){
-      	e.preventDefault();
+      $('.add_curr_course_res_set_course').on('click',function(e){
+      	e.preventDefault();/*
+                alert("add_curr_course_res_set"+i);*/
+
       	$('.add_curr_course_res').hide();
       	$('#add_curr_course_res_form'+i).show();
       	$('#add_curr_course_res_modal').modal('show');
 
       	$('#add_curr_course_res_warning'+i).show();
       	$('.add_curr_course_res_data').text("Semester "+i+", "+$('#add_curr_course_res_hidden').text());
-				// alert("add_curr_course_res_set"+i);
       });
-
-			$('#add_curr_course_res_set'+i).submit(function(e){
-	          e.preventDefault();
-	          var friendForm = $(this);
+    
+    $('.add_curr_course_res_set').on('click',function(e){
+        alert('aa gaya');
+        e.preventDefault();
+        alert(i);
+        var friendForm = $("#add_curr_course_res_form"+i);
 	          var posting = $.post( friendForm.attr('action'), friendForm.serialize() );
-						alert("kgvdnk");
+              alert(posting);
 	          posting.done(function(data) {
-							$('#add_curr_course_res_modal').modal('hide');
-	              alert('Courses Added Successfully');
-
+                if(data.done){
+    				$('#add_curr_course_res_modal').modal('hide');
+    	            alert('Courses Added Successfully');
+                }
+                else{
+                    $('#add_curr_course_res_modal').modal('hide');
+                    alert('Courses could not be Added');
+                }
 	          });
 	          posting.fail(function(data) {
 	              alert('Failed to add Courses');
-	              window.location = "/academic-procedures/main/";
+	              window.location = "/acad/";
 	          });
 	      });
 
@@ -877,11 +886,11 @@
                         </div>
                         <div class="three wide field">
                             <div class="ui input focus">
-                                <input type="text" name="pcccourse_id" placeholder="Course ID">
+                                <input type="text" name="peccourse_id" placeholder="Course ID">
                             </div>
                         </div>
                         <div class="four wide field">
-                            <select name="pcccourse" class="ui dropdown">
+                            <select name="peccourse" class="ui dropdown">
                                 <option value="">Course Name</option>
                                 {% for p in course_list %}
                                 <option value="{{p.course_name}}">{{p.course_name}}</option>
