@@ -33,6 +33,10 @@
                     <B>Courses</B>
                     <i class="right floated chevron right icon"></i>
                 </a>
+                <a class="item" data-tab="three">
+                    <B>Student Profile</B>
+                    <i class="right floated chevron right icon"></i>
+                </a>
 			</div>
 		</div>
 
@@ -79,6 +83,22 @@
                 </div>
                 <div class="ui tab " data-tab="view_course" style="width: 100%">
                     {%  include 'acad/view_course.html' %}
+                </div>
+            </div>
+            <div class="ui tab segment" data-tab="three" >
+                <div class="ui two item stackable tabs menu" style="width: 100%">
+                    <a class="active item" data-tab="add_student_profile" style="width: 50%">
+                        <center>Upload Student Data</center>
+                    </a>
+                    <a class="item" data-tab="search_student_profile" style="width: 50%">
+                        <center>View Student Data</center>
+                    </a>
+                </div>
+                <div class="ui active tab " data-tab="add_student_profile" style="width: 100%">
+                    {%  include 'acad/add_student_profile.html' %}
+                </div>
+                <div class="ui tab " data-tab="search_student_profile" style="width: 100%">
+                    {%  include 'acad/blank.html' %}
                 </div>
             </div>
 	    </div>

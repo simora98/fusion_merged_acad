@@ -1,12 +1,26 @@
 import json
-from django.shortcuts import render,redirect
-from django.urls import reverse_lazy
-from django.http import Http404,HttpResponse,HttpResponseRedirect
-from django.views.generic import TemplateView
-from .models import BatchSemester,Course,CurriculumCourse,CurriculumInstructor,BtechCurriculum,Constants,MtechCurriculum,MtechSemester
+import datetime
+import json
+import os
+import xlrd
+from io import BytesIO
+from xlsxwriter.workbook import Workbook
+from xhtml2pdf import pisa
+from itertools import chain
+
+from django.contrib.auth.models import User
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse,Http404
+from django.shortcuts import get_object_or_404, render,redirect
+from django.template.loader import get_template
+from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
-from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView
+from .models import BatchSemester,Course,CurriculumCourse,CurriculumInstructor,BtechCurriculum,Constants,MtechCurriculum,MtechSemester,student_acad
 from django.db import transaction
+from applications.globals.models import (Designation, ExtraInfo,
+                                         HoldsDesignation, DepartmentInfo)
 
 # Create your views here.
 
@@ -1356,4 +1370,202 @@ def view_mtech(request):
 
 
 
-    #
+
+@login_required
+def user_check(request):
+    """
+    This function is used to check the type of user.
+    It checkes the authentication of the user.
+
+    @param:
+        request - contains metadata about the requested page
+
+    @variables:
+        current_user - get user from request
+        user_details - extract details of user from database
+        desig_id - check for designation
+        acadadmin - designation for Acadadmin
+        final_user - final designation of request user
+
+    """
+    try:
+        current_user = get_object_or_404(User, username=request.user.username)
+        user_details = ExtraInfo.objects.all().filter(user=current_user).first()
+        desig_id = Designation.objects.all().filter(name='Upper Division Clerk')
+        temp = HoldsDesignation.objects.all().filter(designation = desig_id).first()
+        acadadmin = temp.working
+        k = str(user_details).split()
+        final_user = k[2]
+    except:
+        acadadmin=""
+        final_user=""
+        pass
+
+    if (str(acadadmin) != str(final_user)):
+        return True
+    else:
+        return False
+
+
+
+
+
+
+def add_student_profile(request) : 
+    """
+    To add details of new upcoming students in the database.User must be logged in and must be acadadmin
+
+    @param:
+        request - contains metadata about the requested page.
+
+    @variables:
+        profiles - gets the excel file having data
+        excel - excel file
+        sheet - sheet no in excel file
+        roll_no - details of student from file
+        first_name - details of student from file
+        last_name - details of student from file
+        email - details of student from file
+        sex - details of student from file
+        title - details of student from file
+        dob - details of student from file
+        fathers_name - details of student from file
+        mothers_name - details of student from file
+        category - details of student from file
+        phone_no - details of student from file
+        address - details of student from file
+        department - details of student from file
+        specialization - details of student from file
+        hall_no - details of student from file
+        programme - details of student from file
+        batch - details of student from file
+        user - new user created in database
+        einfo - new extrainfo object created in database
+        stud_data - new student object created in database
+        desig - get designation object of student
+        holds_desig - get hold_desig object of student
+        currs - get curriculum details
+        reg - create registeration object in registeration table
+
+    """
+    if user_check(request):
+        return HttpResponseRedirect('/acad/')
+
+    context= {
+        'tab_id' :['2','1']
+    }
+    if request.method == 'POST' and request.FILES:
+        profiles=request.FILES['profiles']
+        print (request.FILES)
+        excel = xlrd.open_workbook(file_contents=profiles.read())
+        sheet=excel.sheet_by_index(0)
+        print("Stage 1 Reached")
+        for i in range(6,sheet.nrows):
+            roll_no=int(sheet.cell(i,0).value)
+            first_name=str(sheet.cell(i,1).value)
+            last_name=str(sheet.cell(i,2).value)
+            email=str(sheet.cell(i,3).value)
+            sex=str(sheet.cell(i,4).value)
+            if sex is 'F':
+                title='Ms.'
+            else:
+                title='Mr.'
+            dob_tmp=sheet.cell(i,5).value
+            dob_tmp=sheet.cell_value(rowx=i,colx=5)
+            print(dob_tmp)
+            print(type(dob_tmp))
+            dob=datetime.datetime(*xlrd.xldate_as_tuple(dob_tmp,excel.datemode))
+            fathers_name=str(sheet.cell(i,6).value)
+            mothers_name=str(sheet.cell(i,7).value)
+            category=str(sheet.cell(i,8).value)
+            phone_no=int(sheet.cell(i,9).value)
+            address=str(sheet.cell(i,10).value)
+            dept=str(sheet.cell(i,11).value)
+            department=DepartmentInfo.objects.get(name=dept)
+            specialization=str(sheet.cell(i,12).value)
+            if specialization is "":
+                specialization="None"
+
+            programme=request.POST['Programme']
+            batch=request.POST['Batch']
+
+            print(roll_no)
+            print(first_name)
+            print(last_name)
+            print(email)
+            print(sex)
+            print(dob)
+            print(fathers_name)
+            print(mothers_name)
+            print(category)
+            print(phone_no)
+            print(address)
+            print(programme)
+            print(dept)
+            print(specialization)
+
+            user = User.objects.create_user(
+                username=roll_no,
+                password='hello123',
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+            )
+
+            einfo = ExtraInfo.objects.create(
+                id=roll_no,
+                user=user,
+                title=title,
+                sex=sex,
+                date_of_birth=dob,
+                address=address,
+                phone_no=phone_no,
+                user_type='student',
+                department=department,
+            )
+
+            stud_data = student_acad.objects.create(
+                id=einfo,
+                programme=programme,
+                batch=batch,
+                category=category,
+                father_name=fathers_name,
+                mother_name=mothers_name,
+                specialization=specialization,
+            )
+
+            desig = Designation.objects.get(name='student')
+            hold_des = HoldsDesignation.objects.create(
+                user=user,
+                working=user,
+                designation=desig,
+            )
+
+            print(roll_no)
+            print(first_name)
+            print(last_name)
+            print(email)
+            print(sex)
+            print(dob)
+            print(fathers_name)
+            print(mothers_name)
+            print(category)
+            print(phone_no)
+            print(address)
+            print(programme)
+            print(dept)
+            print(specialization)
+            # print(hall_no)
+            # sem=1
+            # currs = Curriculum.objects.filter(batch=batch).filter(sem=sem)
+            # for c in currs:
+            #     reg=Register.objects.create(
+            #         curr_id=c,
+            #         year=batch,
+            #         semester=1,
+            #         student_id=stud_data,
+            #     )
+
+    else:
+        return render(request, "acad/acad.html", context)
+    return render(request, "acad/acad.html", context)

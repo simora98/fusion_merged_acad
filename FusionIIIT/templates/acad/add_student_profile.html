@@ -1,0 +1,60 @@
+{% load static %}
+
+    <form class="ui form" method="POST" action="../add_student_profile" id="add_new_profile"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="field">
+            <h4 class="ui blue header">Note : Provide the data in Excel Sheet in following format:</h4>
+            RollNo | First Name | Last Name | Email | Sex | DOB | Father's Name | Mother's Name | 
+            Category | Phone No | Address | Department | Specialization   
+            <h4 class="ui dividing header"><a href="../../../media/Administrator/academic_information/sheet.xlsx">Download</a> the sample Excel, fill the data accordingly and then upload the same</h4>
+        </div>
+        <div class="field">
+            <label>Programme</label>
+            <select name="Programme" id="programme">
+                <option value="B.Tech">B.Tech</option>
+                <option value="B.Des">B.Des</option>
+                <option value="M.Des">M.Des</option>
+                <option value="M.Tech">M.Tech</option>
+                <option value="Phd">PhD</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Batch</label>
+            <input type="number" name="Batch" id="batch" size="4" required>
+        </div>
+
+        <div class="field">
+            <input type="file" name="profiles" id="profiles" required accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        </div>
+
+
+            <button class="ui primary button" id="add_student_profile_batch" type="submit"><i class="upload icon"></i> Upload</button>
+    </form>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+<!-- <script type="text/javascript">
+$(document).ready(function(){
+    $('#add_student_profile_batch').on('click',function(e){
+        alert('a');
+        e.preventDefault();
+        var friendForm = $("#add_new_profile");
+        var posting = $.post( friendForm.attr('action'), friendForm.serialize() );
+        posting.done(function(data) {
+            if(data.done){
+                alert(data.msg);
+                }
+                else{
+                    alert(data.msg);
+                }
+              });
+              posting.fail(function(data) {
+                  alert('Failed to add Profiles');
+                  window.location = "/acad/";
+              });
+          });
+
+    });
+</script> -->

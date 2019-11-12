@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^view_btech/', views.view_btech_curriculum),
     url(r'^view_mtech/', views.view_mtech),
     url(r'^send/', views.send_list),
+    url(r'^add_student_profile', views.add_student_profile, name='add_new_profile'),
 
 
 ]

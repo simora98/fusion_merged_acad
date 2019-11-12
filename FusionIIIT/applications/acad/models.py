@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from applications.globals.models import ExtraInfo
 # from Fusion-master.FusionIIIT.applications.globals import ExtraInfo
 # Create your models here.
 
@@ -22,6 +23,12 @@ class Constants:
         ('MTECH', 'MTECH'),
         ('MDES', 'MDES'),
         ('PHD', 'PHD')
+    )
+    CATEGORY = (
+        ('GEN', 'General'),
+        ('SC', 'Scheduled Castes'),
+        ('ST', 'Scheduled Tribes'),
+        ('OBC', 'Other Backward Classes')
     )
 
     COURSE_TYPE = (
@@ -204,6 +211,16 @@ class CurriculumInstructor(models.Model):
 
 
 
+class student_acad(models.Model):
+    id =  models.OneToOneField(ExtraInfo, on_delete=models.CASCADE, primary_key=True)
+    programme = models.CharField(max_length=10, choices=Constants.PROGRAMME)
+    batch = models.IntegerField(default=2016)
+    father_name = models.CharField(max_length=40, default='')
+    mother_name = models.CharField(max_length=40, default='')
+    specialization = models.CharField(max_length=20,choices=Constants.MTechSpecialization, null=True)
+    category = models.CharField(max_length=10, choices=Constants.CATEGORY, null=False)
+    def __str__(self):
+        return str(self.id)
 
 
 
@@ -211,12 +228,3 @@ class CurriculumInstructor(models.Model):
 
 
 
-
-
-
-
-
-
-
-
-    ##sdns
